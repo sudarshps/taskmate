@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import Swal from 'sweetalert2'
+import axiosApi from "../api/axiosInstance";
 
 
 export default function Signup() {
@@ -55,8 +57,21 @@ export default function Signup() {
 
         if (validateForm()) {
            console.log('submitted');
-           
-
+           await axiosApi.post(`/api/user/create-user`,formData)
+            .then((res)=>{
+                Swal.fire({
+                    title: "Success!",
+                    text: res.data.message,
+                    icon: "success"
+                  });
+            })
+            .catch((err)=>{
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.response.data.message,
+                  });
+            })
         }
     };
 

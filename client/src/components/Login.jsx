@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
+import Swal from 'sweetalert2'
+import axiosApi from '../api/axiosInstance';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -26,12 +28,26 @@ export default function LoginPage() {
             return;
         }
 
-
+        await axiosApi.post('/api/user/login', { email, password })
+            .then((res) => {                
+                Swal.fire({
+                    title: "Success!",
+                    text: res.data.message,
+                    icon: "success"
+                });
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.response.data.message,
+                });
+            })
     };
 
     return (
         <>
-        <Navbar/>
+            <Navbar />
             <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
                     <div>
@@ -72,7 +88,7 @@ export default function LoginPage() {
                             </div>
 
                             <div className="space-y-1">
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                                     Password <span className="text-red-500">*</span>
                                 </label>
                                 <input
