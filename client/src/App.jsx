@@ -1,27 +1,44 @@
-import React from 'react'
-import Navbar from './components/Navbar'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute'
+import LoginPage from './components/Login'
+import Signup from './components/Signup'
+import Home from './pages/Home'
+import useAuthStore from './store/authStore';
+import axiosApi from './api/axiosInstance';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
-  return (
-    <div>
-      <Navbar />
-      <div className='flex flex-col min-h-screen gap-6 items-center pt-16'>
-        <div>
-          <h1 className='font-bold text-5xl text-center mb-4 text-gray-800'>
-            Simplify Your Tasks,
-          </h1>
-          <h1 className='font-bold text-5xl text-center mb-4 text-gray-800'>
-            Stay Organized
-          </h1>
-        </div>
+  const {isAuth,setAuth} = useAuthStore()  
 
-        <p className='text-lg text-center text-gray-600 max-w-2xl mx-auto leading-relaxed'>
-          Take control of your day with TaskMate, your ultimate task management companion. Effortlessly organize, prioritize, and track all your tasks in one place. Whether for work, school, or personal goals, TaskMate helps you stay focused, boost productivity, and get things done with ease.
-        </p>
-        <Link to={'/signup'}><button className='bg-blue-500 rounded-4xl shdaow-md p-4 text-white hover:cursor-pointer hover:bg-blue-600'>Get Started</button></Link>
-      </div>
-    </div>
+  useEffect(()=>{
+    const checkAuth = async () => {
+      try {
+        const response = await axiosApi.get('/api/user/authenticate', { withCredentials: true });
+        if (response.status === 200) {
+          setAuth(true); 
+        }
+      } catch (error) {
+        setAuth(false);  
+      }
+    };
+
+    checkAuth()
+  },[setAuth])
+
+  // if (isAuth === null) {
+  //   return <div>Loading...</div>;
+  // }
+
+  return (
+    <Router>
+    <Routes>
+      <Route path='/' element={!isAuth?<Home />:<Dashboard/>} />
+      <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      <Route path='/login' element={<LoginPage />} />
+      <Route path='/signup' element={<Signup />} />
+    </Routes>
+  </Router>
   )
 }
 

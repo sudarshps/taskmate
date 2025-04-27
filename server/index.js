@@ -4,6 +4,7 @@ import cors from 'cors'
 dotenv.config()
 import connectDb from './config/db.js'
 import userRoute from './routes/userRoutes.js'
+import taskRoute from './routes/taskRoutes.js'
 import passport from './config/passport.js'
 import cookieParser from 'cookie-parser'
 
@@ -17,11 +18,12 @@ app.use(cookieParser())
 
 app.use(cors({
     origin:process.env.FRONTEND_URL,
-    methods:['GET','POST','PUT','PATCH'],
+    methods:['GET','POST','PUT','PATCH','DELETE'],
     credentials:true
 }))
 
 app.use('/api/user',userRoute)
+app.use('/api/task',taskRoute)
 
 
 app.listen(PORT,()=>{
