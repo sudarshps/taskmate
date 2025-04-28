@@ -12,9 +12,9 @@ const updateStatus = useTaskStore((state)=>state.updateTaskStatus)
 
 
 
-const handleStatusChange = async(taskId,newStatus) => {
-    try {
-        updateStatus(taskId, newStatus);
+const handleStatusChange = async(taskId,index,newStatus) => {
+    try {      
+        updateStatus(taskId,index, newStatus);
        await updateTaskStatusApi(taskId, newStatus);
       } catch (error) {
         console.error('Failed to update task status:', error);
@@ -32,7 +32,7 @@ const handleStatusChange = async(taskId,newStatus) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'task',
     drop: (item) => {
-        handleStatusChange(item.id, title);
+        handleStatusChange(item.id, item.index , title);
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -47,8 +47,8 @@ const handleStatusChange = async(taskId,newStatus) => {
 
       <ul className="flex flex-col gap-3">
         {filteredTasks && filteredTasks.length > 0 ? (
-          filteredTasks.map((tsk) => (
-            <Task key={tsk._id} id={tsk._id} title={tsk.title} />
+          filteredTasks.map((tsk,ind) => (
+            <Task key={tsk._id} id={tsk._id} index={ind} title={tsk.title} />
           ))
         ) : (
           <li className="text-gray-400 text-center">No tasks</li>

@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Swal from 'sweetalert2'
 import axiosApi from '../api/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,6 +38,7 @@ export default function LoginPage() {
                     text: res.data.message,
                     icon: "success"
                 });
+                navigate('/taskboard')
             })
             .catch((err) => {
                 Swal.fire({

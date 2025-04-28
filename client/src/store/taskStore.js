@@ -14,7 +14,7 @@ const useTaskStore = create((set) => ({
       tasks: state.tasks.filter((task) => task._id !== id),
     })),
   setTasks: (tasks) => set({ tasks }),
-  updateTaskStatus: (taskId, newStatus) => set((state) => ({
+  updateTaskStatus: (taskId,index, newStatus) => set((state) => ({
     tasks: state.tasks.map((task) => 
       task._id === taskId ? { ...task, status: newStatus } : task
     )

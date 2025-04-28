@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import useTaskStore from "../store/taskStore";
 
-export default function AddTask({createTask,tasks}) {
+export default function AddTask({createTask}) {
   const [task, setTask] = useState({
     title:'',
     status:'To-Do',
   });
+  
+  const tasks = useTaskStore((state)=>state.tasks)
 
   const handleCreate = () => {
     if (task.title.trim() !== "") {
@@ -36,7 +39,7 @@ export default function AddTask({createTask,tasks}) {
           />
           <button
             onClick={handleCreate}
-            className="bg-blue-500 text-white px-5 py-3 rounded-xl hover:bg-blue-600 transition-all"
+            className="bg-blue-500 text-white hover:cursor-pointer px-5 py-3 rounded-xl hover:bg-blue-600 transition-all"
           >
             Create
           </button>

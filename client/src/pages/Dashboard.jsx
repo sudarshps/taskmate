@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar.jsx'
 import AddTask from '../components/AddTask.jsx'
 import axiosApi from '../api/axiosInstance.js'
@@ -33,27 +33,14 @@ const Dashboard = () => {
     }
 
   }
-  
-  const handleChanges = async(id,status) =>{
-    try {
-      await axiosApi.put(`/api/task/update-task/${id}`,{status})
-      setTasks(prev =>
-        prev.map(task =>
-          task._id === id ? { ...task, status } : task
-        )
-      );
-    } catch (error) {
-      
-    }
-  }
 
 
   return (
     <>
       <Navbar />
       <DndProvider backend={HTML5Backend}>
-        <div className='flex flex-col items-center'>
-          <AddTask createTask={addTask} tasks={tasks} />
+        <div className='flex flex-col gap-10 items-center'>
+          <AddTask createTask={addTask} />
           <TaskSection tasks={tasks} />
         </div>
       </DndProvider>

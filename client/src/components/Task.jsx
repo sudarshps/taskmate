@@ -3,10 +3,10 @@ import { useDrag } from 'react-dnd';
 import useTaskStore from '../store/taskStore';
 import axiosApi from '../api/axiosInstance';
 
-const Task = ({ id, title }) => {
+const Task = ({ id, index , title }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'task',
-        item: { id },
+        item: { id,index },
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -65,7 +65,7 @@ const Task = ({ id, title }) => {
                     </button>
                     <button
                         onClick={handleDeleteClick}
-                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                        className="bg-red-500 text-white hover:cursor-pointer px-2 py-1 rounded hover:bg-red-600"
                     >
                         Delete
                     </button>

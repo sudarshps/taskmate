@@ -9,9 +9,13 @@ import { FaUserCircle } from "react-icons/fa";
 import { Menu, MenuItem } from '@mui/material';
 import useAuthStore from '../store/authStore';
 import { useState } from 'react';
+import axiosApi from '../api/axiosInstance.js'
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
     const { isAuth, setAuth } = useAuthStore()
+
+    const navigate = useNavigate()
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -20,10 +24,24 @@ export default function Navbar() {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleMenuClose = () => {
+    const handleMenuClose = async () => {
         setAnchorEl(null);
-        setAuth(false)
     };
+
+    React.useEffect(()=>{
+
+    },[isAuth])
+
+    const logOut = async () => {
+        setAuth(false)
+        localStorage.removeItem('isAuth')
+        await axiosApi.post(`/api/user/logout`)
+            .then((res) => {
+                if (res.data.isLoggedOut) {
+                    navigate('/login')
+                }
+            })
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -59,7 +77,7 @@ export default function Navbar() {
                                         Profile
                                     </Link>
                                 </MenuItem>
-                                <MenuItem onClick={() =>  handleMenuClose()}>
+                                <MenuItem onClick={logOut}>
                                     Logout
                                 </MenuItem>
                             </Menu>

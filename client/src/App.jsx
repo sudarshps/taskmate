@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute'
 import LoginPage from './components/Login'
 import Signup from './components/Signup'
@@ -27,17 +27,15 @@ const App = () => {
     checkAuth()
   },[setAuth])
 
-  // if (isAuth === null) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <Router>
     <Routes>
       <Route path='/' element={!isAuth?<Home />:<Dashboard/>} />
+      <Route path='/taskboard' element={<Dashboard/>}/>
       <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path='/login' element={<LoginPage />} />
-      <Route path='/signup' element={<Signup />} />
+      <Route path='/login' element={isAuth ? <Navigate to="/taskboard" /> : <LoginPage />} />
+      <Route path='/signup' element={isAuth ? <Navigate to="/taskboard" /> : <Signup />} />
     </Routes>
   </Router>
   )

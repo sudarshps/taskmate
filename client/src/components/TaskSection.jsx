@@ -8,7 +8,7 @@ const TaskSection = () => {
   
 
   return (
-    <div className="flex items-center gap-10">
+    <div className="flex gap-10">
       {sections.map((title, ind) => {
         const filteredTasks = tasks.filter((task) => task.status === title);        
         return (
