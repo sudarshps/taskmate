@@ -40,38 +40,37 @@ const Task = ({ id, index , title }) => {
 
     return (
         <li
-            ref={drag}
-            className={`p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition cursor-pointer ${isDragging ? 'opacity-50' : 'opacity-100'
-                }`}
-        >
-            <div className="flex justify-between items-center">
-                {isEditing ? (
-                    <input
-                        type="text"
-                        value={newTitle}
-                        onChange={(e) => setNewTitle(e.target.value)}
-                        className="border rounded p-1"
-                    />
-                ) : (
-                    <span>{title}</span>
-                )}
+        ref={drag}
+        className={`p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition cursor-pointer ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+    >
+        <div className="flex justify-between items-center">
+            {isEditing ? (
+                <input
+                    type="text"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    className="border rounded p-1 w-full" 
+                />
+            ) : (
+                <span className="text-ellipsis overflow-hidden whitespace-nowrap">{title}</span>
+            )}
 
-                <div className="flex gap-2">
-                    <button
-                        onClick={handleEditClick}
-                        className="bg-blue-500 text-white px-2 py-1 hover:cursor-pointer rounded hover:bg-blue-600"
-                    >
-                        {isEditing ? 'Save' : 'Edit'}
-                    </button>
-                    <button
-                        onClick={handleDeleteClick}
-                        className="bg-red-500 text-white hover:cursor-pointer px-2 py-1 rounded hover:bg-red-600"
-                    >
-                        Delete
-                    </button>
-                </div>
+            <div className="flex gap-2">
+                <button
+                    onClick={handleEditClick}
+                    className="bg-blue-500 text-white px-2 py-1 hover:cursor-pointer rounded hover:bg-blue-600"
+                >
+                    {isEditing ? 'Save' : 'Edit'}
+                </button>
+                <button
+                    onClick={handleDeleteClick}
+                    className="bg-red-500 text-white hover:cursor-pointer px-2 py-1 rounded hover:bg-red-600"
+                >
+                    Delete
+                </button>
             </div>
-        </li>
+        </div>
+    </li>
     );
 };
 

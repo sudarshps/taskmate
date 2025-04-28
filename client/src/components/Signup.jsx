@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import Swal from 'sweetalert2'
 import axiosApi from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Signup() {
@@ -13,6 +14,8 @@ export default function Signup() {
     });
 
     const [errors, setErrors] = useState({});
+
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,14 +59,17 @@ export default function Signup() {
         e.preventDefault();
 
         if (validateForm()) {
-           console.log('submitted');
            await axiosApi.post(`/api/user/create-user`,formData)
             .then((res)=>{
-                Swal.fire({
-                    title: "Success!",
-                    text: res.data.message,
-                    icon: "success"
-                  });
+                if(res.data.userCreated){
+                    Swal.fire({
+                        title: "Success!",
+                        text: res.data.message,
+                        icon: "success"
+                      });
+                      navigate('/taskboard')
+                }
+                
             })
             .catch((err)=>{
                 Swal.fire({

@@ -29,7 +29,7 @@ export default function Navbar() {
     };
 
     React.useEffect(()=>{
-
+        
     },[isAuth])
 
     const logOut = async () => {
