@@ -59,7 +59,7 @@ const Task = ({ id, index , title }) => {
                 <div className="flex gap-2">
                     <button
                         onClick={handleEditClick}
-                        className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                        className="bg-blue-500 text-white px-2 py-1 hover:cursor-pointer rounded hover:bg-blue-600"
                     >
                         {isEditing ? 'Save' : 'Edit'}
                     </button>
