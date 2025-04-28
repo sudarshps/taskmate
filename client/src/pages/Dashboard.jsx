@@ -5,13 +5,15 @@ import axiosApi from '../api/axiosInstance.js'
 import TaskSection from '../components/TaskSection.jsx'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import useTaskStore from '../store/taskStore.js'
 
 const Dashboard = () => {
-  const [tasks, setTasks] = useState([])
+  const setTasks = useTaskStore((state)=>state.setTasks)
+  const tasks = useTaskStore((state) => state.tasks);
 
   useEffect(() => {
     fetchTasks()
-  }, [])
+  }, [tasks])
 
   const fetchTasks = async () => {
     try {
@@ -33,7 +35,6 @@ const Dashboard = () => {
   }
   
   const handleChanges = async(id,status) =>{
-    console.log('statuschange',id,status);
     try {
       await axiosApi.put(`/api/task/update-task/${id}`,{status})
       setTasks(prev =>
@@ -53,7 +54,7 @@ const Dashboard = () => {
       <DndProvider backend={HTML5Backend}>
         <div className='flex flex-col items-center'>
           <AddTask createTask={addTask} tasks={tasks} />
-          <TaskSection tasks={tasks} onStatusChange={handleChanges}/>
+          <TaskSection tasks={tasks} />
         </div>
       </DndProvider>
 

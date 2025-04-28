@@ -8,12 +8,6 @@ import useAuthStore from './store/authStore';
 import axiosApi from './api/axiosInstance';
 import Dashboard from './pages/Dashboard';
 
-// Temporary warning suppression
-const originalError = console.error;
-console.error = (...args) => {
-  if (/defaultProps/.test(args[0])) return;
-  originalError.call(console, ...args);
-};
 
 const App = () => {
   const {isAuth,setAuth} = useAuthStore()  

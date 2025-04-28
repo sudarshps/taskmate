@@ -1,9 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import Task from './Task';
 import { useDrop } from 'react-dnd';
+import useTaskStore from '../store/taskStore';
+import { updateTaskStatusApi } from '../api/taskApi';
 
-const Section = ({ title, task,onStatusChange }) => {
+const Section = ({ title }) => {
   const [color, setColor] = useState('bg-blue-500');
+const tasks = useTaskStore((state) => state.tasks);
+const filteredTasks = tasks.filter((task) => task.status === title);
+const updateStatus = useTaskStore((state)=>state.updateTaskStatus)
+
+
+
+const handleStatusChange = async(taskId,newStatus) => {
+    try {
+        updateStatus(taskId, newStatus);
+       await updateTaskStatusApi(taskId, newStatus);
+      } catch (error) {
+        console.error('Failed to update task status:', error);
+      }
+}
 
   useEffect(() => {
     if (title === 'In-Progress') {
@@ -16,7 +32,7 @@ const Section = ({ title, task,onStatusChange }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'task',
     drop: (item) => {
-      onStatusChange(item.id, title);
+        handleStatusChange(item.id, title);
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -30,8 +46,8 @@ const Section = ({ title, task,onStatusChange }) => {
       </div>
 
       <ul className="flex flex-col gap-3">
-        {task && task.length > 0 ? (
-          task.map((tsk) => (
+        {filteredTasks && filteredTasks.length > 0 ? (
+          filteredTasks.map((tsk) => (
             <Task key={tsk._id} id={tsk._id} title={tsk.title} />
           ))
         ) : (

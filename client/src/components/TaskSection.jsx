@@ -1,8 +1,10 @@
 import React from 'react';
 import Section from './Section';
+import useTaskStore from '../store/taskStore';
 
-const TaskSection = ({ tasks,onStatusChange }) => {
+const TaskSection = () => {
   const sections = ['To-Do', 'In-Progress', 'Completed'];
+  const tasks = useTaskStore((state) => state.tasks) || [];
   
 
   return (
@@ -10,7 +12,7 @@ const TaskSection = ({ tasks,onStatusChange }) => {
       {sections.map((title, ind) => {
         const filteredTasks = tasks.filter((task) => task.status === title);        
         return (
-          <Section key={ind} title={title} task={filteredTasks} onStatusChange={onStatusChange}/>
+          <Section key={ind} title={title} task={filteredTasks}/>
         );
       })}
     </div>

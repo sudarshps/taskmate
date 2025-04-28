@@ -26,10 +26,9 @@ class TaskController {
     }
 
     async updateTask(req, res) {
-        try {
+        try {            
             const { id } = req.params
             const { title, status, position } = req.body;
-
             const updatedTask = await taskModel.findByIdAndUpdate(id, { title, status, position }, { new: true })
 
             if (!updatedTask) {
